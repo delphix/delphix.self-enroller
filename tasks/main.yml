@@ -15,7 +15,6 @@
     name: "Enroll into Delphix on boot"
     special_time: reboot
     job: "sudo {{ ansible_env.HOME }}/self_enroll -c conf.txt"
-  become: no
 - name: Create conf.txt
   template: 
     src: conf.j2
