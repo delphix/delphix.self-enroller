@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2019 by Delphix. All rights reserved.
+#
+---
+version: v0.2-alpha
+ddp_hostname: delphixengine
+ddp_username: delphix_admin
+ddp_password: changeme
+skip_validate:  true
+filename: /var/lib/pgsql/.ssh/authorized_keys
+toolkit_path: /var/lib/pgsql/toolkit
+environment_user:  postgres
