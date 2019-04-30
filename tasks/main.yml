@@ -3,19 +3,19 @@
 #
 ---
 # Include variables and define needed variables.
-- name: Download self_enroll
+- name: "Download self_enroll to {{ansible_env.HOME}}"
   get_url:
     url: "https://github.com/CloudSurgeon/self_enroller/releases/download/{{ version }}/self_enroll_linux_x64"
     dest: "{{ansible_env.HOME}}/self_enroll"
     mode: "u+x,g+x"
   retries: 3
   delay: 2
-- name: Creates the reboot crontab for self_enroll 
+- name: Creates the reboot crontab for {{ ansible_env.HOME }}/self_enroll 
   cron:
     name: "Enroll into Delphix on boot"
     special_time: reboot
     job: "sudo {{ ansible_env.HOME }}/self_enroll -c conf.txt"
-- name: Create conf.txt
+- name: "Create {{ ansible_env.HOME }}/conf.txt"
   template: 
     src: conf.j2
     dest: "{{ ansible_env.HOME }}/conf.txt"
