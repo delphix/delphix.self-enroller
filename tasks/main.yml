@@ -2,20 +2,30 @@
 # Copyright (c) 2019 by Delphix. All rights reserved.
 #
 ---
-# Include variables and define needed variables.
-- name: "Download self_enroll to {{ansible_env.HOME}}"
+- debug:
+    msg: "version is {{ version }}"
+- name: set asset name
+  set_fact:
+    asset_name: self_enroll_linux_x64
+
+- name: set asset name when v0.3+
+  set_fact:
+    asset_name: "self_enroll_linux_x64_{{ version }}.tgz"
+  when: version is version('v0.3', '>=')
+
+- name: "Download self_enroll to {{ ansible_env.HOME }}"
   get_url:
-    url: "https://github.com/CloudSurgeon/self_enroller/releases/download/{{ version }}/self_enroll_linux_x64"
-    dest: "{{ansible_env.HOME}}/self_enroll"
+    url: "https://github.com/CloudSurgeon/self_enroller/releases/download/{{ version }}/{{ asset_name }}"
+    dest: "{{ ansible_env.HOME }}/self_enroll"
     mode: "u+x,g+x"
   retries: 3
   delay: 2
-- name: Creates the reboot crontab for {{ ansible_env.HOME }}/self_enroll 
+- name: Creates the reboot crontab for {{ ansible_env.HOME }}/self_enroll
   cron:
     name: "Enroll into Delphix on boot"
     special_time: reboot
     job: "sudo {{ ansible_env.HOME }}/self_enroll -c conf.txt"
 - name: "Create {{ ansible_env.HOME }}/conf.txt"
-  template: 
+  template:
     src: conf.j2
     dest: "{{ ansible_env.HOME }}/conf.txt"

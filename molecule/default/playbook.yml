@@ -12,3 +12,5 @@
       yum:
         name: cronie
         state: present
+  vars:
+    version: v0.3
