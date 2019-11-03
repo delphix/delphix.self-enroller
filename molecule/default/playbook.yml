@@ -14,3 +14,11 @@
         state: present
   vars:
     version: v0.3
+  post_tasks:
+    - name: "Check if {{ ansible_env.HOME }}/self_enroll is present."
+      stat:
+        path: "{{ ansible_env.HOME }}/self_enroll"
+      register: stat_result
+    - name: "Fail if {{ ansible_env.HOME }}/self_enroll doesn't exist"
+      fail:
+      when: not stat_result.stat.exists
